@@ -1,0 +1,546 @@
+---
+title: "Consultas SPARQL sobre el Grafo de Cronobiología"
+subtitle: "Papel de los Genes del Reloj Circadiano en los Trastornos del Sueño"
+author: "Laura Llamas López"
+date: "Enero 2026"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    toc_depth: 3
+    number_sections: true
+    theme: flatly
+    highlight: tango
+    df_print: paged
+---
+
+```{css, echo=FALSE}
+/* Evitar superposición del TOC flotante con el contenido */
+.tocify {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 200px;
+  height: calc(100% - 60px);
+  overflow: auto;
+  z-index: 100;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+/* Ajustar el contenido principal para que no quede tapado */
+.col-md-9 {
+  margin-left: 220px;
+  width: calc(100% - 240px) !important;
+  max-width: none !important;
+}
+
+/* Asegurar que las tablas DT no queden cortadas */
+.dataTables_wrapper {
+  overflow-x: auto;
+}
+
+/* Mejorar legibilidad del TOC */
+.tocify-item {
+  font-size: 0.9em;
+}
+
+.tocify ul, .tocify li {
+  line-height: 1.5;
+}
+
+/* En pantallas pequeñas, ajustar layout */
+@media (max-width: 768px) {
+  .tocify {
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  .col-md-9 {
+    margin-left: 0;
+    width: 100% !important;
+  }
+}
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  comment = NA
+)
+```
+
+# Introducción
+
+Este documento contiene **5 consultas SPARQL** (incluyendo 4a y 4b) diseñadas para explotar semánticamente un grafo RDF sobre **cronobiología**. Las consultas extraen conocimiento biomédico integrado sobre genes del reloj circadiano, variantes patogénicas, interacciones proteicas, análisis de redes, correlaciones genotipo-fenotipo y opciones terapéuticas.
+
+---
+
+# Instalación y Configuración
+
+## Librerías necesarias
+
+```{r install-packages, eval=FALSE}
+# Ejecutar solo la primera vez
+install.packages("SPARQL")
+install.packages("ggplot2")
+install.packages("DT")
+install.packages("knitr")
+```
+
+```{r load-libraries}
+library(SPARQL)
+library(ggplot2)
+library(DT)
+library(knitr)
+```
+
+## Configuración del Endpoint SPARQL
+
+```{r setup-endpoint}
+# Endpoint de Blazegraph
+endpoint <- "http://dayhoff.inf.um.es:3039/blazegraph/namespace/cronobiologia/sparql"
+
+# Timeout para consultas remotas (segundos)
+options(timeout = 30)
+
+# Función para ejecutar consultas SPARQL
+ejecutar_consulta <- function(query) {
+  resultado <- SPARQL(endpoint, query)
+  return(as.data.frame(resultado$results))
+}
+```
+
+---
+
+# CONSULTA 0: Verificación del Grafo RDF
+
+## Objetivo
+
+Consulta de **control de calidad** que verifica la carga correcta del grafo RDF en Blazegraph. 
+**Utilidad biomédica:**  
+✓ Control de calidad del proceso ETL (Extract-Transform-Load)  
+✓ Verificación de integridad de datos antes de análisis clínicos  
+
+## Ejecución
+
+```{r consulta0}
+# Paso 1: Contar total de tripletas
+consulta0_count <- '
+SELECT (COUNT(*) AS ?total)
+WHERE {
+  ?sujeto ?predicado ?objeto .
+}
+'
+
+total_tripletas <- ejecutar_consulta(consulta0_count)
+cat("Total de tripletas en el grafo:", total_tripletas$total, "\n\n")
+
+# Paso 2: Recuperar tripletas
+consulta0 <- '
+SELECT ?sujeto ?predicado ?objeto
+WHERE {
+    ?sujeto ?predicado ?objeto .
+}
+ORDER BY ?sujeto ?predicado
+'
+
+resultados0 <- ejecutar_consulta(consulta0)
+```
+
+## Resultados
+
+```{r tabla0}
+datatable(resultados0, options = list(pageLength=10))
+```
+
+---
+
+# Consulta 1: Trastornos y Fenotipos Clínicos Asociados
+
+## Pregunta de Investigación
+
+> *¿Qué fenotipos clínicos caracterizan cada trastorno del sueño?*
+
+## Interés Biomédico
+
+La correlación genotipo-fenotipo es fundamental para el diagnóstico diferencial entre trastornos circadianos, medicina de precisión e investigación traslacional. El mapeo con Human Phenotype Ontology (HPO) permite la interoperabilidad con bases de datos clínicas.
+
+## Consulta SPARQL
+
+```{r consulta1}
+consulta1 <- '
+PREFIX crono: <http://cronobiologia.um.es/recurso/>
+PREFIX crono_o: <http://cronobiologia.um.es/ontologia/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX biolink: <https://w3id.org/biolink/vocab/>
+
+SELECT ?trastorno ?nombreTrastorno ?fenotipo ?nombreFenotipo ?descripcionFenotipo ?hpo
+WHERE {
+  ?trastorno rdf:type biolink:Disease ;
+             rdfs:label ?nombreTrastorno ;
+             crono_o:tieneFenotipo ?fenotipo .
+  
+  ?fenotipo rdfs:label ?nombreFenotipo ;
+            rdfs:comment ?descripcionFenotipo .
+
+  OPTIONAL {
+    ?fenotipo rdfs:seeAlso ?hpo .
+    FILTER(CONTAINS(STR(?hpo), "HP_"))
+  }
+}
+ORDER BY ?nombreTrastorno ?nombreFenotipo
+'
+
+resultados1 <- ejecutar_consulta(consulta1)
+```
+
+## Resultados
+
+```{r tabla1}
+datatable(resultados1, options = list(pageLength = 10))
+```
+
+---
+
+# Consulta 2: Tratamientos Farmacológicos y Trastornos Diana
+
+## Pregunta de Investigación
+
+> *¿Qué fármacos están indicados para cada trastorno circadiano y cuál es su mecanismo básico?*
+
+## Interés Biomédico
+
+Permite:
+
+- **Visualizar opciones terapéuticas** por trastorno
+- **Comparar tratamientos** entre patologías
+- **Identificar fármacos compartidos** (melatonina como eje terapéutico)
+
+## Consulta SPARQL
+
+```{r consulta2}
+consulta2 <- '
+PREFIX crono: <http://cronobiologia.um.es/recurso/>
+PREFIX crono_o: <http://cronobiologia.um.es/ontologia/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX biolink: <https://w3id.org/biolink/vocab/>
+
+SELECT ?nombreTrastorno ?nombreFarmaco ?mecanismo ?drugbank
+WHERE {
+  ?trastorno rdf:type biolink:Disease ;
+             rdfs:label ?nombreTrastorno ;
+             crono_o:tratadoCon ?farmaco .
+  
+  ?farmaco rdfs:label ?nombreFarmaco ;
+           rdfs:comment ?mecanismo .
+  
+  OPTIONAL {
+    ?farmaco rdfs:seeAlso ?drugbank .
+    FILTER(CONTAINS(STR(?drugbank), "drugbank"))
+  }
+}
+ORDER BY ?nombreTrastorno ?nombreFarmaco
+'
+
+resultados2 <- ejecutar_consulta(consulta2)
+```
+
+## Resultados
+
+```{r tabla2}
+datatable(resultados2, options = list(pageLength = 10))
+```
+
+---
+
+# Consulta 3: Mutaciones Missense Patogénicas que Causan Adelanto de Fase
+
+## Pregunta de Investigación
+
+> *¿Qué mutaciones de tipo missense con patogenicidad confirmada causan el Trastorno de Fase de Sueño Adelantada (ASPD)?*
+
+## Interés Biomédico
+
+El **Trastorno de Fase de Sueño Adelantada (ASPD)** es un trastorno circadiano caracterizado por:
+
+- Somnolencia extrema entre las 18:00-21:00
+- Despertar espontáneo entre las 2:00-5:00 AM
+- Imposibilidad de mantenerse despierto en horarios convencionales
+
+Las **mutaciones missense** en genes como *PER2* y *CSNK1D* alteran la fosforilación de las proteínas PER, acortando el período circadiano. 
+
+## Consulta SPARQL
+
+```{r consulta3}
+consulta3 <- '
+PREFIX crono: <http://cronobiologia.um.es/recurso/>
+PREFIX crono_o: <http://cronobiologia.um.es/ontologia/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX biolink: <https://w3id.org/biolink/vocab/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?variante ?nombreVariante ?nombreGen ?patogenicidad ?herencia ?clinvar ?descripcion
+WHERE {
+    ?variante rdf:type biolink:SequenceVariant ;
+              rdfs:label ?nombreVariante ;
+              rdfs:comment ?descripcion ;
+              crono_o:afectaGen ?gen ;
+              crono_o:causaTrastorno crono:Trastorno_ASPD ;
+              crono_o:tipoMutacion crono:TipoMutacion_Missense .
+    
+    ?variante crono_o:tienePatogenicidad ?patogenicidad .
+    FILTER(?patogenicidad = "Patogénica"^^xsd:string)
+    
+    ?gen rdfs:label ?nombreGen .
+    
+    ?variante crono_o:tienePatronHerencia ?herenciaUri .
+    ?herenciaUri rdfs:label ?herencia .
+    
+    OPTIONAL {
+        ?variante rdfs:seeAlso ?clinvar .
+        FILTER(CONTAINS(STR(?clinvar), "clinvar"))
+    }
+}
+ORDER BY ?nombreGen ?nombreVariante
+'
+
+resultados3 <- ejecutar_consulta(consulta3)
+```
+
+## Resultados
+
+```{r tabla3}
+datatable(resultados3, options = list(pageLength = 10))
+```
+
+---
+
+# Consulta 4a: Interacciones y Regulación del Reloj Circadiano
+
+## Pregunta de Investigación
+
+> *¿Qué relaciones de interacción física y regulación (positiva/negativa) existen en el oscilador circadiano?*
+
+## Interés Biomédico
+
+Esta consulta reconstruye la **red de interacción + regulación** del TTFL, útil para:
+
+- **Modelado del oscilador molecular**
+- **Identificación de dianas** (hubs regulatorios)
+- **Interpretación de variantes** en genes reguladores
+
+## Consulta SPARQL
+
+```{r consulta4a}
+consulta4a <- '
+PREFIX crono: <http://cronobiologia.um.es/recurso/>
+PREFIX crono_o: <http://cronobiologia.um.es/ontologia/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?origenLabel ?tipoRelacion ?destinoLabel ?destinoTipo
+WHERE {
+  {
+    # Interacciones físicas proteína-proteína
+    ?origen crono_o:interactuaCon ?destino .
+    BIND("Interacción física (PPI)" AS ?tipoRelacion)
+  }
+  UNION
+  {
+    # Regulación transcripcional positiva
+    ?origen crono_o:regulaPositivamente ?destino .
+    BIND("Regulación positiva" AS ?tipoRelacion)
+  }
+  UNION
+  {
+    # Regulación transcripcional negativa
+    ?origen crono_o:regulaNegativamente ?destino .
+    BIND("Regulación negativa" AS ?tipoRelacion)
+  }
+
+  ?origen rdfs:label ?origenLabel .
+  ?destino rdfs:label ?destinoLabel .
+  OPTIONAL { ?destino rdf:type ?destinoTipo . }
+}
+ORDER BY ?tipoRelacion ?origenLabel ?destinoLabel
+'
+
+resultados4a <- ejecutar_consulta(consulta4a)
+```
+
+## Resultados
+
+```{r tabla4a}
+datatable(resultados4a, options = list(pageLength = 10))
+```
+
+---
+
+# Consulta 4b: Análisis de Centralidad en la Red del Reloj Circadiano
+
+## Pregunta de Investigación
+
+> *¿Qué proteínas actúan como hubs regulatorios en la red circadiana?*
+
+## Interés Biomédico
+
+La **teoría de redes** aplicada a sistemas biológicos permite identificar **nodos críticos** (hubs) que:
+
+- **Coordinan múltiples procesos** (alto grado de centralidad)
+- Son **dianas terapéuticas prioritarias** (su inhibición tiene mayor impacto)
+- Predicen **fragilidad del sistema** ante mutaciones
+
+Esta consulta calcula un **índice de centralidad** sumando:
+- Número de **interacciones físicas** (PPI)
+- Número de **genes regulados** (transcripcionalmente)
+
+**Interpretación clínica:** Proteínas con alto grado de centralidad (≥5) son candidatos óptimos para:
+- Desarrollo de fármacos moduladores
+- Estudios de variantes patogénicas
+- Biomarcadores de trastornos circadianos
+
+## Consulta SPARQL
+
+```{r consulta4b}
+consulta4b <- '
+PREFIX crono: <http://cronobiologia.um.es/recurso/>
+PREFIX crono_o: <http://cronobiologia.um.es/ontologia/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX biolink: <https://w3id.org/biolink/vocab/>
+
+SELECT ?proteina ?nombreProteina 
+       (COUNT(DISTINCT ?interactor) AS ?numInteracciones)
+       (COUNT(DISTINCT ?genRegulado) AS ?genesRegulados)
+       ((?numInteracciones + ?genesRegulados) AS ?gradoCentralidad)
+WHERE {
+  ?proteina rdf:type biolink:Protein ;
+            rdfs:label ?nombreProteina .
+  
+  # Contar interacciones físicas proteína-proteína
+  OPTIONAL {
+    ?proteina crono_o:interactuaCon ?interactor .
+  }
+  
+  # Contar genes que regula (positiva o negativamente)
+  OPTIONAL {
+    ?proteina (crono_o:regulaPositivamente|crono_o:regulaNegativamente) ?genRegulado .
+  }
+}
+GROUP BY ?proteina ?nombreProteina
+HAVING(?gradoCentralidad > 0)
+ORDER BY DESC(?gradoCentralidad)
+'
+
+resultados4b <- ejecutar_consulta(consulta4b)
+```
+
+## Resultados
+
+```{r tabla4b}
+datatable(resultados4b, options = list(pageLength = 10))
+```
+
+## Visualización: Ranking de Centralidad
+
+```{r grafico4b, fig.width=10, fig.height=6}
+ggplot(resultados4b, aes(x = reorder(nombreProteina, gradoCentralidad), 
+                        y = gradoCentralidad, 
+                        fill = gradoCentralidad)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_gradient(low = "#ffa600", high = "#bc5090") +
+  labs(title = "Centralidad de Proteínas en la Red Circadiana",
+       subtitle = "Suma de interacciones físicas y genes regulados",
+       x = "Proteína",
+       y = "Grado de Centralidad",
+       fill = "Centralidad") +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "none",
+        plot.title = element_text(face = "bold", size = 14),
+        axis.text.y = element_text(size = 10))
+```
+
+---
+
+# Consulta 5 (Federada): Información de Proteínas desde UniProt
+
+## Pregunta de Investigación
+
+> *¿Qué nombres recomendados reporta UniProt para las proteínas del grafo?*
+
+## Interés Biomédico
+
+Enriquece el grafo local con información básica de UniProt para:
+
+- Validar identidades proteicas con nomenclatura oficial
+- Verificar la interoperabilidad con bases de datos internacionales
+
+## Consulta SPARQL (Federada)
+
+```{r consulta5-federada}
+# Aumentar timeout solo para esta consulta (SERVICE a UniProt puede tardar)
+old_timeout <- getOption("timeout")
+options(timeout = 300)
+on.exit(options(timeout = old_timeout), add = TRUE)
+
+consulta5_federada <- '
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX biolink: <https://w3id.org/biolink/vocab/>
+PREFIX up: <http://purl.uniprot.org/core/>
+
+SELECT ?nombreLocal ?uniprotId ?nombreUniprot
+WHERE {
+  ?proteinaLocal a biolink:Protein ;
+                 rdfs:label ?nombreLocal ;
+                 rdfs:seeAlso ?uniprotUri .
+
+  FILTER(CONTAINS(STR(?uniprotUri), "uniprot"))
+  BIND(REPLACE(STR(?uniprotUri), "http://purl.uniprot.org/uniprot/", "") AS ?uniprotId)
+
+  SERVICE SILENT <https://sparql.uniprot.org/sparql> {
+    ?uniprotUri a up:Protein .
+    OPTIONAL { ?uniprotUri up:recommendedName/up:fullName ?nombreUniprot . }
+  }
+}
+ORDER BY ?nombreLocal
+'
+
+resultados5_federada <- tryCatch(
+  ejecutar_consulta(consulta5_federada),
+  error = function(e) {
+    message(paste("Error en consulta federada a UniProt:", e$message))
+    data.frame()
+  }
+)
+```
+
+## Resultados
+
+```{r tabla5-federada}
+if (nrow(resultados5_federada) > 0) {
+  datatable(resultados5_federada, options = list(pageLength = 10),
+            caption = "Información enriquecida desde UniProt")
+} else {
+  cat("No se pudieron obtener resultados de UniProt en esta ejecución.\n")
+  cat("Suele ser por timeout/red o por restricciones del endpoint al hacer SERVICE.\n")
+}
+```
+
+---
+
+# Conclusiones
+
+Este conjunto de consultas SPARQL demuestra la capacidad de extraer conocimiento estructurado de un grafo RDF biomédico que integra vocabularios estándar (BioLink, Gene Ontology, HPO, MONDO). Las consultas permiten identificar relaciones entre genes, proteínas, variantes patogénicas, fenotipos clínicos y opciones terapéuticas, facilitando la investigación traslacional en trastornos del ritmo circadiano.
+
+---

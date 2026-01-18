@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:ns0="http://cronobiologia.um.es/ontologia/">
+
+  <owl:ObjectProperty rdf:about="http://cronobiologia.um.es/ontologia/codifica">
+    <rdfs:label xml:lang="es">codifica</rdfs:label>
+    <rdfs:seeAlso rdf:resource="https://w3id.org/biolink/vocab/has_gene_product"/>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/RO_0002205"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://cronobiologia.um.es/ontologia/localizadoEn">
+    <rdfs:label xml:lang="es">localizado en</rdfs:label>
+    <rdfs:seeAlso rdf:resource="https://w3id.org/biolink/vocab/located_in"/>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/RO_0001025"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://cronobiologia.um.es/ontologia/interactuaCon">
+    <rdfs:label xml:lang="es">interactúa con</rdfs:label>
+    <rdfs:seeAlso rdf:resource="https://w3id.org/biolink/vocab/interacts_with"/>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/RO_0002434"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://cronobiologia.um.es/ontologia/regulaPositivamente">
+    <rdfs:label xml:lang="es">regula positivamente</rdfs:label>
+    <rdfs:seeAlso rdf:resource="https://w3id.org/biolink/vocab/positively_regulates"/>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/RO_0002213"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://cronobiologia.um.es/ontologia/regulaNegativamente">
+    <rdfs:label xml:lang="es">regula negativamente</rdfs:label>
+    <rdfs:seeAlso rdf:resource="https://w3id.org/biolink/vocab/negatively_regulates"/>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/RO_0002212"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://cronobiologia.um.es/ontologia/causaTrastorno">
+    <rdfs:label xml:lang="es">causa trastorno</rdfs:label>
+    <rdfs:seeAlso rdf:resource="https://w3id.org/biolink/vocab/causes"/>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/RO_0003303"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://cronobiologia.um.es/ontologia/tieneFenotipo">
+    <rdfs:label xml:lang="es">tiene fenotipo</rdfs:label>
+    <rdfs:seeAlso rdf:resource="https://w3id.org/biolink/vocab/has_phenotype"/>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/RO_0002200"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://cronobiologia.um.es/ontologia/tratadoCon">
+    <rdfs:label xml:lang="es">tratado con</rdfs:label>
+    <rdfs:seeAlso rdf:resource="https://w3id.org/biolink/vocab/treated_by"/>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/RO_0002302"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://cronobiologia.um.es/ontologia/participaEn">
+    <rdfs:label xml:lang="es">participa en</rdfs:label>
+    <rdfs:seeAlso rdf:resource="https://w3id.org/biolink/vocab/participates_in"/>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/RO_0002331"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://cronobiologia.um.es/ontologia/afectaGen">
+    <rdfs:label xml:lang="es">afecta al gen</rdfs:label>
+    <rdfs:seeAlso rdf:resource="https://w3id.org/biolink/vocab/affects"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://cronobiologia.um.es/ontologia/tienePatronHerencia">
+    <rdfs:label xml:lang="es">tiene patrón de herencia</rdfs:label>
+    <rdfs:seeAlso rdf:resource="https://w3id.org/biolink/vocab/has_mode_of_inheritance"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://cronobiologia.um.es/ontologia/tipoMutacion">
+    <rdfs:label xml:lang="es">tipo de mutación</rdfs:label>
+    <rdfs:comment xml:lang="es">Relaciona una variante con su clasificación según Sequence Ontology (missense, frameshift, etc.).</rdfs:comment>
+  </owl:ObjectProperty>
+
+  <owl:DatatypeProperty rdf:about="http://cronobiologia.um.es/ontologia/tienePatogenicidad">
+    <rdfs:label xml:lang="es">tiene patogenicidad</rdfs:label>
+    <rdfs:comment xml:lang="es">Clasificación de patogenicidad según ACMG: Patogénica, Probablemente patogénica, VUS, Probablemente benigna, Benigna.</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Proceso_RitmoCircadiano">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/BiologicalProcess"/>
+    <rdfs:label xml:lang="es">Ritmo circadiano</rdfs:label>
+    <rdfs:comment xml:lang="es">Proceso biológico endógeno con período de ~24 horas.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/GO_0007623"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Proceso_RegulacionRitmo">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/BiologicalProcess"/>
+    <rdfs:label xml:lang="es">Regulación del ritmo circadiano</rdfs:label>
+    <rdfs:comment xml:lang="es">Proceso que modula el ritmo circadiano.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/GO_0042752"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Proceso_FosforilacionProteina">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/BiologicalProcess"/>
+    <rdfs:label xml:lang="es">Fosforilación de proteínas</rdfs:label>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/GO_0006468"/>
+  </rdf:Description>
+
+  <owl:Class rdf:about="http://cronobiologia.um.es/recurso/Herencia_AutosomicaDominante">
+    <rdfs:label xml:lang="es">Herencia autosómica dominante</rdfs:label>
+    <rdfs:comment xml:lang="es">Patrón de herencia donde una sola copia del alelo mutante es suficiente para causar el fenotipo.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/GENO_0000147"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="http://cronobiologia.um.es/recurso/TipoMutacion_Missense">
+    <rdfs:label xml:lang="es">Variante missense</rdfs:label>
+    <rdfs:comment xml:lang="es">Variante que causa sustitución de aminoácido.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/SO_0001583"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="http://cronobiologia.um.es/recurso/TipoMutacion_SpliceDonor">
+    <rdfs:label xml:lang="es">Variante de sitio donador de splicing</rdfs:label>
+    <rdfs:comment xml:lang="es">Variante que altera el sitio donador de splicing.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/SO_0001575"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="http://cronobiologia.um.es/recurso/TipoMutacion_VNTR">
+    <rdfs:label xml:lang="es">Repetición en tándem de número variable</rdfs:label>
+    <rdfs:comment xml:lang="es">Polimorfismo de longitud variable por repeticiones.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/SO_0000643"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="http://cronobiologia.um.es/recurso/TipoMutacion_Sinonima">
+    <rdfs:label xml:lang="es">Variante sinónima</rdfs:label>
+    <rdfs:comment xml:lang="es">Variante que no cambia el aminoácido codificado.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/SO_0001819"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="http://cronobiologia.um.es/recurso/TipoMutacion_Frameshift">
+    <rdfs:label xml:lang="es">Variante frameshift</rdfs:label>
+    <rdfs:comment xml:lang="es">Variante que altera el marco de lectura.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/SO_0001589"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="http://cronobiologia.um.es/recurso/TipoMutacion_Nonsense">
+    <rdfs:label xml:lang="es">Variante nonsense</rdfs:label>
+    <rdfs:comment xml:lang="es">Variante que introduce un codón de parada prematuro.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/SO_0001587"/>
+  </owl:Class>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Cromosoma_1">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/NucleicAcidEntity"/>
+    <rdfs:label xml:lang="es">Cromosoma 1</rdfs:label>
+    <rdfs:comment xml:lang="es">Cromosoma humano 1 (GRCh38).</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/nuccore/NC_000001"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Cromosoma_2">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/NucleicAcidEntity"/>
+    <rdfs:label xml:lang="es">Cromosoma 2</rdfs:label>
+    <rdfs:comment xml:lang="es">Cromosoma humano 2 (GRCh38).</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/nuccore/NC_000002"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Cromosoma_4">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/NucleicAcidEntity"/>
+    <rdfs:label xml:lang="es">Cromosoma 4</rdfs:label>
+    <rdfs:comment xml:lang="es">Cromosoma humano 4 (GRCh38).</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/nuccore/NC_000004"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Cromosoma_11">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/NucleicAcidEntity"/>
+    <rdfs:label xml:lang="es">Cromosoma 11</rdfs:label>
+    <rdfs:comment xml:lang="es">Cromosoma humano 11 (GRCh38).</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/nuccore/NC_000011"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Cromosoma_12">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/NucleicAcidEntity"/>
+    <rdfs:label xml:lang="es">Cromosoma 12</rdfs:label>
+    <rdfs:comment xml:lang="es">Cromosoma humano 12 (GRCh38).</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/nuccore/NC_000012"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Cromosoma_17">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/NucleicAcidEntity"/>
+    <rdfs:label xml:lang="es">Cromosoma 17</rdfs:label>
+    <rdfs:comment xml:lang="es">Cromosoma humano 17 (GRCh38).</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/nuccore/NC_000017"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Cromosoma_22">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/NucleicAcidEntity"/>
+    <rdfs:label xml:lang="es">Cromosoma 22</rdfs:label>
+    <rdfs:comment xml:lang="es">Cromosoma humano 22 (GRCh38).</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/nuccore/NC_000022"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Fenotipo_SomnolenciaTemprana">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/PhenotypicFeature"/>
+    <rdfs:label xml:lang="es">Inicio de sueño temprano</rdfs:label>
+    <rdfs:comment xml:lang="es">Inicio del sueño en horas tempranas (18-21h). Característica de ASPD.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/HP_0031873"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Fenotipo_DespertarTemprano">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/PhenotypicFeature"/>
+    <rdfs:label xml:lang="es">Despertar temprano</rdfs:label>
+    <rdfs:comment xml:lang="es">Despertar antes de lo deseado y no poder volver a dormir.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/HP_0031356"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Fenotipo_DificultadConciliar">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/PhenotypicFeature"/>
+    <rdfs:label xml:lang="es">Dificultad para conciliar el sueño</rdfs:label>
+    <rdfs:comment xml:lang="es">Incapacidad para dormirse a hora convencional.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/HP_0031354"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Fenotipo_DespertarTardio">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/PhenotypicFeature"/>
+    <rdfs:label xml:lang="es">Despertar tardío</rdfs:label>
+    <rdfs:comment xml:lang="es">Despertar natural en mediodía o tarde.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/HP_0025298"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Fenotipo_PatronSuenoAlterado">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/PhenotypicFeature"/>
+    <rdfs:label xml:lang="es">Patrón de sueño alterado</rdfs:label>
+    <rdfs:comment xml:lang="es">Desincronización del ciclo sueño-vigilia.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/HP_0006979"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Fenotipo_SuenoFragmentado">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/PhenotypicFeature"/>
+    <rdfs:label xml:lang="es">Sueño fragmentado</rdfs:label>
+    <rdfs:comment xml:lang="es">Múltiples episodios breves de sueño sin consolidación.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/HP_0025199"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Fenotipo_DesincronizacionCircadiana">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/PhenotypicFeature"/>
+    <rdfs:label xml:lang="es">Desincronización circadiana</rdfs:label>
+    <rdfs:comment xml:lang="es">Ritmo circadiano no alineado con ciclo de 24h.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/HP_0025365"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Fenotipo_DificultadMantener">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/PhenotypicFeature"/>
+    <rdfs:label xml:lang="es">Dificultad mantener sueño</rdfs:label>
+    <rdfs:comment xml:lang="es">Despertares frecuentes nocturnos.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/HP_0031355"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Fenotipo_CalidadPobreSueno">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/PhenotypicFeature"/>
+    <rdfs:label xml:lang="es">Calidad pobre del sueño</rdfs:label>
+    <rdfs:comment xml:lang="es">Sueño no reparador.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/HP_4000064"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Fenotipo_SomnolenciaDiurna">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/PhenotypicFeature"/>
+    <rdfs:label xml:lang="es">Somnolencia diurna excesiva</rdfs:label>
+    <rdfs:comment xml:lang="es">Excesiva propensión al sueño diurno.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/HP_0001262"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Farmaco_Melatonina">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Drug"/>
+    <rdfs:label xml:lang="es">Melatonina</rdfs:label>
+    <rdfs:comment xml:lang="es">Hormona endógena para sincronización circadiana. Agonista MT1/MT2. Administración: por la noche en DSPD e insomnio; por la mañana en ASPD.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://go.drugbank.com/drugs/DB01065"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Farmaco_Ramelteon">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Drug"/>
+    <rdfs:label xml:lang="es">Ramelteon</rdfs:label>
+    <rdfs:comment xml:lang="es">Agonista selectivo de receptores de melatonina.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://go.drugbank.com/drugs/DB00980"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Farmaco_Tasimelteon">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Drug"/>
+    <rdfs:label xml:lang="es">Tasimelteon</rdfs:label>
+    <rdfs:comment xml:lang="es">Agonista dual MT1/MT2, aprobado para Non-24.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://go.drugbank.com/drugs/DB09071"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Trastorno_ASPD">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Disease"/>
+    <rdfs:label xml:lang="es">Trastorno de Fase de Sueño Adelantada</rdfs:label>
+    <rdfs:comment xml:lang="es">CRSD caracterizado por somnolencia temprana (18-21h) y despertar temprano (2-5h).</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/MONDO_0024378"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_DesincronizacionCircadiana"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_SomnolenciaTemprana"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_DespertarTemprano"/>
+    <ns0:tratadoCon rdf:resource="http://cronobiologia.um.es/recurso/Farmaco_Melatonina"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Trastorno_DSPD">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Disease"/>
+    <rdfs:label xml:lang="es">Trastorno de Fase de Sueño Retrasada</rdfs:label>
+    <rdfs:comment xml:lang="es">CRSD caracterizado por incapacidad para dormirse antes de 2-4 AM y despertar tardío.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/MONDO_0024377"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_DesincronizacionCircadiana"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_DificultadConciliar"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_DespertarTardio"/>
+    <ns0:tratadoCon rdf:resource="http://cronobiologia.um.es/recurso/Farmaco_Melatonina"/>
+    <ns0:tratadoCon rdf:resource="http://cronobiologia.um.es/recurso/Farmaco_Ramelteon"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Trastorno_IrregularSleepWake">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Disease"/>
+    <rdfs:label xml:lang="es">Trastorno de Ritmo Sueño-Vigilia Irregular</rdfs:label>
+    <rdfs:comment xml:lang="es">CRSD caracterizado por múltiples episodios de sueño fragmentado distribuidos en 24h sin patrón claro.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/MONDO_0024379"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_DesincronizacionCircadiana"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_PatronSuenoAlterado"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_DificultadConciliar"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_DificultadMantener"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_SuenoFragmentado"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_DespertarTemprano"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_CalidadPobreSueno"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_SomnolenciaDiurna"/>
+    <ns0:tratadoCon rdf:resource="http://cronobiologia.um.es/recurso/Farmaco_Melatonina"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Trastorno_Non24">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Disease"/>
+    <rdfs:label xml:lang="es">Trastorno de Sueño-Vigilia No-24 Horas</rdfs:label>
+    <rdfs:comment xml:lang="es">CRSD caracterizado por ritmo circadiano &gt;24h, común en personas totalmente ciegas.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/MONDO_0019137"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_DesincronizacionCircadiana"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_PatronSuenoAlterado"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_DificultadConciliar"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_DificultadMantener"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_SuenoFragmentado"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_DespertarTardio"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_CalidadPobreSueno"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_SomnolenciaDiurna"/>
+    <ns0:tratadoCon rdf:resource="http://cronobiologia.um.es/recurso/Farmaco_Tasimelteon"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Trastorno_Insomnio">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Disease"/>
+    <rdfs:label xml:lang="es">Insomnio Crónico</rdfs:label>
+    <rdfs:comment xml:lang="es">Dificultad crónica para iniciar o mantener el sueño, con duración ≥3 meses.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.obolibrary.org/obo/MONDO_0013600"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_PatronSuenoAlterado"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_DificultadConciliar"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_DificultadMantener"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_SuenoFragmentado"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_DespertarTemprano"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_CalidadPobreSueno"/>
+    <ns0:tieneFenotipo rdf:resource="http://cronobiologia.um.es/recurso/Fenotipo_SomnolenciaDiurna"/>
+    <ns0:tratadoCon rdf:resource="http://cronobiologia.um.es/recurso/Farmaco_Melatonina"/>
+    <ns0:tratadoCon rdf:resource="http://cronobiologia.um.es/recurso/Farmaco_Ramelteon"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Gen_CLOCK">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Gene"/>
+    <rdfs:label xml:lang="es">CLOCK</rdfs:label>
+    <rdfs:comment xml:lang="es">Circadian Locomotor Output Cycles Kaput. Regulador transcripcional maestro del ritmo circadiano.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/gene/9575"/>
+    <ns0:codifica rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CLOCK"/>
+    <ns0:localizadoEn rdf:resource="http://cronobiologia.um.es/recurso/Cromosoma_4"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Gen_BMAL1">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Gene"/>
+    <rdfs:label xml:lang="es">BMAL1</rdfs:label>
+    <rdfs:comment xml:lang="es">Brain and Muscle ARNT-Like 1. Factor de transcripción heterodímero obligado con CLOCK.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/gene/406"/>
+    <ns0:codifica rdf:resource="http://cronobiologia.um.es/recurso/Proteina_BMAL1"/>
+    <ns0:localizadoEn rdf:resource="http://cronobiologia.um.es/recurso/Cromosoma_11"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Gen_NPAS2">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Gene"/>
+    <rdfs:label xml:lang="es">NPAS2</rdfs:label>
+    <rdfs:comment xml:lang="es">Neuronal PAS Domain Protein 2. Paralógo funcional de CLOCK en cerebro anterior.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/gene/4862"/>
+    <ns0:codifica rdf:resource="http://cronobiologia.um.es/recurso/Proteina_NPAS2"/>
+    <ns0:localizadoEn rdf:resource="http://cronobiologia.um.es/recurso/Cromosoma_2"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Gen_PER1">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Gene"/>
+    <rdfs:label xml:lang="es">PER1</rdfs:label>
+    <rdfs:comment xml:lang="es">Period Circadian Regulator 1. Represor transcripcional negativo.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/gene/5187"/>
+    <ns0:codifica rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER1"/>
+    <ns0:localizadoEn rdf:resource="http://cronobiologia.um.es/recurso/Cromosoma_17"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Gen_PER2">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Gene"/>
+    <rdfs:label xml:lang="es">PER2</rdfs:label>
+    <rdfs:comment xml:lang="es">Period Circadian Regulator 2. Mutaciones causan FASPS.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/gene/8864"/>
+    <ns0:codifica rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER2"/>
+    <ns0:localizadoEn rdf:resource="http://cronobiologia.um.es/recurso/Cromosoma_2"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Gen_PER3">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Gene"/>
+    <rdfs:label xml:lang="es">PER3</rdfs:label>
+    <rdfs:comment xml:lang="es">Period Circadian Regulator 3. Modulador de cronotipo.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/gene/8863"/>
+    <ns0:codifica rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER3"/>
+    <ns0:localizadoEn rdf:resource="http://cronobiologia.um.es/recurso/Cromosoma_1"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Gen_CRY1">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Gene"/>
+    <rdfs:label xml:lang="es">CRY1</rdfs:label>
+    <rdfs:comment xml:lang="es">Cryptochrome Circadian Regulator 1. Represor de CLOCK-BMAL1.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/gene/1407"/>
+    <ns0:codifica rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CRY1"/>
+    <ns0:localizadoEn rdf:resource="http://cronobiologia.um.es/recurso/Cromosoma_12"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Gen_CRY2">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Gene"/>
+    <rdfs:label xml:lang="es">CRY2</rdfs:label>
+    <rdfs:comment xml:lang="es">Cryptochrome Circadian Regulator 2. Componente del loop negativo.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/gene/1408"/>
+    <ns0:codifica rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CRY2"/>
+    <ns0:localizadoEn rdf:resource="http://cronobiologia.um.es/recurso/Cromosoma_11"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Gen_NR1D1">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Gene"/>
+    <rdfs:label xml:lang="es">NR1D1</rdfs:label>
+    <rdfs:comment xml:lang="es">Nuclear Receptor Subfamily 1 Group D Member 1. Represor de BMAL1.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/gene/9572"/>
+    <ns0:codifica>
+      <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Proteina_NR1D1">
+        <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Protein"/>
+        <rdfs:label xml:lang="es">Proteína REV-ERBα</rdfs:label>
+        <rdfs:comment xml:lang="es">Receptor nuclear represor de BMAL1.</rdfs:comment>
+        <rdfs:seeAlso rdf:resource="http://purl.uniprot.org/uniprot/P20393"/>
+        <ns0:participaEn rdf:resource="http://cronobiologia.um.es/recurso/Proceso_RegulacionRitmo"/>
+        <ns0:regulaNegativamente rdf:resource="http://cronobiologia.um.es/recurso/Gen_BMAL1"/>
+      </rdf:Description>
+    </ns0:codifica>
+
+    <ns0:localizadoEn rdf:resource="http://cronobiologia.um.es/recurso/Cromosoma_17"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Gen_CSNK1D">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Gene"/>
+    <rdfs:label xml:lang="es">CSNK1D</rdfs:label>
+    <rdfs:comment xml:lang="es">Casein Kinase 1 Delta. Fosforila PER regulando su estabilidad.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/gene/1453"/>
+    <ns0:codifica rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CSNK1D"/>
+    <ns0:localizadoEn rdf:resource="http://cronobiologia.um.es/recurso/Cromosoma_17"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Gen_CSNK1E">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Gene"/>
+    <rdfs:label xml:lang="es">CSNK1E</rdfs:label>
+    <rdfs:comment xml:lang="es">Casein Kinase 1 Epsilon. Fosforila PER controlando translocación nuclear.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/gene/1454"/>
+    <ns0:codifica rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CSNK1E"/>
+    <ns0:localizadoEn rdf:resource="http://cronobiologia.um.es/recurso/Cromosoma_22"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Proteina_CLOCK">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Protein"/>
+    <rdfs:label xml:lang="es">Proteína CLOCK</rdfs:label>
+    <rdfs:comment xml:lang="es">Factor de transcripción con actividad histona acetiltransferasa. Forma heterodímero con BMAL1 (confirmado experimentalmente: cristalografía, co-IP).</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.uniprot.org/uniprot/O15516"/>
+    <ns0:participaEn rdf:resource="http://cronobiologia.um.es/recurso/Proceso_RitmoCircadiano"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_BMAL1"/>
+    <ns0:regulaPositivamente rdf:resource="http://cronobiologia.um.es/recurso/Gen_PER1"/>
+    <ns0:regulaPositivamente rdf:resource="http://cronobiologia.um.es/recurso/Gen_PER2"/>
+    <ns0:regulaPositivamente rdf:resource="http://cronobiologia.um.es/recurso/Gen_PER3"/>
+    <ns0:regulaPositivamente rdf:resource="http://cronobiologia.um.es/recurso/Gen_CRY1"/>
+    <ns0:regulaPositivamente rdf:resource="http://cronobiologia.um.es/recurso/Gen_CRY2"/>
+    <ns0:regulaPositivamente rdf:resource="http://cronobiologia.um.es/recurso/Gen_NR1D1"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Proteina_BMAL1">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Protein"/>
+    <rdfs:label xml:lang="es">Proteína BMAL1</rdfs:label>
+    <rdfs:comment xml:lang="es">Factor de transcripción con dominios bHLH (basic Helix-Loop-Helix) para unión al ADN y PAS (PER-ARNT-SIM) para dimerización proteica. Forma heterodímeros con CLOCK y NPAS2 (confirmados experimentalmente).</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.uniprot.org/uniprot/O00327"/>
+    <ns0:participaEn rdf:resource="http://cronobiologia.um.es/recurso/Proceso_RitmoCircadiano"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CLOCK"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_NPAS2"/>
+    <ns0:regulaPositivamente rdf:resource="http://cronobiologia.um.es/recurso/Gen_PER1"/>
+    <ns0:regulaPositivamente rdf:resource="http://cronobiologia.um.es/recurso/Gen_PER2"/>
+    <ns0:regulaPositivamente rdf:resource="http://cronobiologia.um.es/recurso/Gen_PER3"/>
+    <ns0:regulaPositivamente rdf:resource="http://cronobiologia.um.es/recurso/Gen_CRY1"/>
+    <ns0:regulaPositivamente rdf:resource="http://cronobiologia.um.es/recurso/Gen_CRY2"/>
+    <ns0:regulaPositivamente rdf:resource="http://cronobiologia.um.es/recurso/Gen_NR1D1"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Proteina_NPAS2">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Protein"/>
+    <rdfs:label xml:lang="es">Proteína NPAS2</rdfs:label>
+    <rdfs:comment xml:lang="es">Paralógo funcional de CLOCK, expresado en cerebro anterior. Actúa como pareja transcripcional de BMAL1 (confirmado experimentalmente).</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.uniprot.org/uniprot/Q99743"/>
+    <ns0:participaEn rdf:resource="http://cronobiologia.um.es/recurso/Proceso_RitmoCircadiano"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_BMAL1"/>
+    <ns0:regulaPositivamente rdf:resource="http://cronobiologia.um.es/recurso/Gen_PER1"/>
+    <ns0:regulaPositivamente rdf:resource="http://cronobiologia.um.es/recurso/Gen_PER2"/>
+    <ns0:regulaPositivamente rdf:resource="http://cronobiologia.um.es/recurso/Gen_CRY1"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Proteina_PER1">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Protein"/>
+    <rdfs:label xml:lang="es">Proteína PER1</rdfs:label>
+    <rdfs:comment xml:lang="es">Represor transcripcional del loop negativo. Forma complejos multiproteicos PER-CRY en citoplasma (evidencia bioquímica general; pares específicos no determinados experimentalmente). Es fosforilada por CK1δ/ε.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.uniprot.org/uniprot/O15534"/>
+    <ns0:participaEn rdf:resource="http://cronobiologia.um.es/recurso/Proceso_RitmoCircadiano"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CRY1"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CRY2"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER2"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER3"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CSNK1D"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CSNK1E"/>
+    <ns0:regulaNegativamente rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CLOCK"/>
+    <ns0:regulaNegativamente rdf:resource="http://cronobiologia.um.es/recurso/Proteina_BMAL1"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Proteina_PER2">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Protein"/>
+    <rdfs:label xml:lang="es">Proteína PER2</rdfs:label>
+    <rdfs:comment xml:lang="es">Represor transcripcional crítico, sustrato de CK1. Forma complejos multiproteicos PER-CRY en citoplasma (evidencia bioquímica general; pares específicos no determinados experimentalmente). La fosforilación por CK1δ/ε marca para ubiquitinación.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.uniprot.org/uniprot/O15055"/>
+    <ns0:participaEn rdf:resource="http://cronobiologia.um.es/recurso/Proceso_RitmoCircadiano"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CRY1"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CRY2"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER1"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER3"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CSNK1D"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CSNK1E"/>
+    <ns0:regulaNegativamente rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CLOCK"/>
+    <ns0:regulaNegativamente rdf:resource="http://cronobiologia.um.es/recurso/Proteina_BMAL1"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Proteina_PER3">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Protein"/>
+    <rdfs:label xml:lang="es">Proteína PER3</rdfs:label>
+    <rdfs:comment xml:lang="es">Modulador de amplitud circadiana. Forma complejos multiproteicos PER-CRY en citoplasma (evidencia bioquímica general; pares específicos no determinados experimentalmente). Es fosforilada por CK1δ.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.uniprot.org/uniprot/P56645"/>
+    <ns0:participaEn rdf:resource="http://cronobiologia.um.es/recurso/Proceso_RitmoCircadiano"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER1"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER2"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CRY1"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CRY2"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CSNK1D"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Proteina_CRY1">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Protein"/>
+    <rdfs:label xml:lang="es">Proteína CRY1</rdfs:label>
+    <rdfs:comment xml:lang="es">Criptocromo fotorreceptor circadiano. Forma complejos multiproteicos PER-CRY que reprimen CLOCK:BMAL1 (evidencia bioquímica general; pares específicos no determinados experimentalmente). Los parálogos CRY1 y CRY2 tienen roles no redundantes.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.uniprot.org/uniprot/Q16526"/>
+    <ns0:participaEn rdf:resource="http://cronobiologia.um.es/recurso/Proceso_RitmoCircadiano"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER1"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER2"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER3"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CRY2"/>
+    <ns0:regulaNegativamente rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CLOCK"/>
+    <ns0:regulaNegativamente rdf:resource="http://cronobiologia.um.es/recurso/Proteina_BMAL1"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Proteina_CRY2">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Protein"/>
+    <rdfs:label xml:lang="es">Proteína CRY2</rdfs:label>
+    <rdfs:comment xml:lang="es">Criptocromo represor de CLOCK-BMAL1. Forma complejos multiproteicos PER-CRY (evidencia bioquímica general; pares específicos no determinados experimentalmente). Los parálogos CRY1 y CRY2 tienen roles no redundantes.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.uniprot.org/uniprot/Q49AN0"/>
+    <ns0:participaEn rdf:resource="http://cronobiologia.um.es/recurso/Proceso_RitmoCircadiano"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER1"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER2"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER3"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CRY1"/>
+    <ns0:regulaNegativamente rdf:resource="http://cronobiologia.um.es/recurso/Proteina_CLOCK"/>
+    <ns0:regulaNegativamente rdf:resource="http://cronobiologia.um.es/recurso/Proteina_BMAL1"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Proteina_CSNK1D">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Protein"/>
+    <rdfs:label xml:lang="es">Caseína quinasa I delta</rdfs:label>
+    <rdfs:comment xml:lang="es">Quinasa que fosforila PER. La fosforilación marca las proteínas PER para ubiquitinación y degradación (relación enzima-sustrato confirmada).</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.uniprot.org/uniprot/P48730"/>
+    <ns0:participaEn rdf:resource="http://cronobiologia.um.es/recurso/Proceso_FosforilacionProteina"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER2"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER1"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER3"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Proteina_CSNK1E">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/Protein"/>
+    <rdfs:label xml:lang="es">Caseína quinasa I epsilon</rdfs:label>
+    <rdfs:comment xml:lang="es">Quinasa que regula estabilidad de PER. La fosforilación marca las proteínas PER para ubiquitinación y degradación (relación enzima-sustrato confirmada).</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://purl.uniprot.org/uniprot/P49674"/>
+    <ns0:participaEn rdf:resource="http://cronobiologia.um.es/recurso/Proceso_FosforilacionProteina"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER2"/>
+    <ns0:interactuaCon rdf:resource="http://cronobiologia.um.es/recurso/Proteina_PER1"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Variante_PER2_Ser662Gly">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/SequenceVariant"/>
+    <rdfs:label xml:lang="es">PER2 p.Ser662Gly</rdfs:label>
+    <rdfs:comment xml:lang="es">Mutación missense en PER2 que causa ASPD. Altera fosforilación por CK1ε.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/clinvar/variation/6345"/>
+    <ns0:tipoMutacion rdf:resource="http://cronobiologia.um.es/recurso/TipoMutacion_Missense"/>
+    <ns0:afectaGen rdf:resource="http://cronobiologia.um.es/recurso/Gen_PER2"/>
+    <ns0:causaTrastorno rdf:resource="http://cronobiologia.um.es/recurso/Trastorno_ASPD"/>
+    <ns0:tienePatogenicidad rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Patogénica</ns0:tienePatogenicidad>
+    <ns0:tienePatronHerencia rdf:resource="http://cronobiologia.um.es/recurso/Herencia_AutosomicaDominante"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Variante_CRY1_Splicing">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/SequenceVariant"/>
+    <rdfs:label xml:lang="es">CRY1 c.1657+3A&gt;C</rdfs:label>
+    <rdfs:comment xml:lang="es">Variante de splicing que causa DSPD. Elongación de proteína CRY1.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/clinvar/variation/427574"/>
+    <ns0:tipoMutacion rdf:resource="http://cronobiologia.um.es/recurso/TipoMutacion_SpliceDonor"/>
+    <ns0:afectaGen rdf:resource="http://cronobiologia.um.es/recurso/Gen_CRY1"/>
+    <ns0:causaTrastorno rdf:resource="http://cronobiologia.um.es/recurso/Trastorno_DSPD"/>
+    <ns0:tienePatogenicidad rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Factor de riesgo</ns0:tienePatogenicidad>
+    <ns0:tienePatronHerencia rdf:resource="http://cronobiologia.um.es/recurso/Herencia_AutosomicaDominante"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Variante_CSNK1D_Thr44Ala">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/SequenceVariant"/>
+    <rdfs:label xml:lang="es">CSNK1D p.Thr44Ala</rdfs:label>
+    <rdfs:comment xml:lang="es">Mutación missense que causa ASPD. Reduce actividad quinasa.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/clinvar/variation/8741"/>
+    <ns0:tipoMutacion rdf:resource="http://cronobiologia.um.es/recurso/TipoMutacion_Missense"/>
+    <ns0:afectaGen rdf:resource="http://cronobiologia.um.es/recurso/Gen_CSNK1D"/>
+    <ns0:causaTrastorno rdf:resource="http://cronobiologia.um.es/recurso/Trastorno_ASPD"/>
+    <ns0:tienePatogenicidad rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Patogénica</ns0:tienePatogenicidad>
+    <ns0:tienePatronHerencia rdf:resource="http://cronobiologia.um.es/recurso/Herencia_AutosomicaDominante"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Variante_PER3_VNTR_4rep">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/SequenceVariant"/>
+    <rdfs:label xml:lang="es">PER3 VNTR 4-repeat</rdfs:label>
+    <rdfs:comment xml:lang="es">Polimorfismo VNTR asociado con cronotipo vespertino.</rdfs:comment>
+    <ns0:tipoMutacion rdf:resource="http://cronobiologia.um.es/recurso/TipoMutacion_VNTR"/>
+    <ns0:afectaGen rdf:resource="http://cronobiologia.um.es/recurso/Gen_PER3"/>
+    <ns0:causaTrastorno rdf:resource="http://cronobiologia.um.es/recurso/Trastorno_DSPD"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://cronobiologia.um.es/recurso/Variante_CLOCK_3111C">
+    <rdf:type rdf:resource="https://w3id.org/biolink/vocab/SequenceVariant"/>
+    <rdfs:label xml:lang="es">CLOCK 3111T&gt;C</rdfs:label>
+    <rdfs:comment xml:lang="es">Polimorfismo sinónimo asociado con cronotipo.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="https://www.ncbi.nlm.nih.gov/snp/rs1801260"/>
+    <ns0:tipoMutacion rdf:resource="http://cronobiologia.um.es/recurso/TipoMutacion_Sinonima"/>
+    <ns0:afectaGen rdf:resource="http://cronobiologia.um.es/recurso/Gen_CLOCK"/>
+  </rdf:Description>
+
+</rdf:RDF>

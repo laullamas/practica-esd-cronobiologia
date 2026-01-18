@@ -1,0 +1,658 @@
+################################################################################
+# GRAFO RDF: PAPEL DE LOS GENES DEL RELOJ CIRCADIANO EN LOS TRASTORNOS DEL SUEÑO
+# Práctica Final - Explotación Semántica de Datos
+# Autora: Laura Llamas López
+# Fecha: Enero 2026
+################################################################################
+
+# =============================================================================
+# PREFIJOS
+# =============================================================================
+
+@prefix crono: <http://cronobiologia.um.es/recurso/> .
+@prefix crono_o: <http://cronobiologia.um.es/ontologia/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix biolink: <https://w3id.org/biolink/vocab/> .
+@prefix uniprot: <http://purl.uniprot.org/uniprot/> .
+@prefix ncbi_gene: <https://www.ncbi.nlm.nih.gov/gene/> .
+@prefix hp: <http://purl.obolibrary.org/obo/HP_> .
+@prefix mondo: <http://purl.obolibrary.org/obo/MONDO_> .
+@prefix go: <http://purl.obolibrary.org/obo/GO_> .
+@prefix so: <http://purl.obolibrary.org/obo/SO_> .
+@prefix ro: <http://purl.obolibrary.org/obo/RO_> .
+@prefix clinvar: <https://www.ncbi.nlm.nih.gov/clinvar/variation/> .
+@prefix dbsnp: <https://www.ncbi.nlm.nih.gov/snp/> .
+@prefix drugbank: <https://go.drugbank.com/drugs/> .
+@prefix geno: <http://purl.obolibrary.org/obo/GENO_> .
+@prefix refseq: <https://www.ncbi.nlm.nih.gov/nuccore/> .
+
+
+# =============================================================================
+# SECCIÓN 1: DEFINICIÓN DE PROPIEDADES PERSONALIZADAS
+# =============================================================================
+
+# Mapeo de propiedades locales a vocabularios estándar (BioLink + RO)
+# Nota: Las propiedades locales se mapean simultáneamente a BioLink Model 
+# (estándar del Biomedical Data Translator) y Relations Ontology 
+# (estándar de OBO Foundry) para maximizar la interoperabilidad semántica
+# y permitir que el grafo sea consultado por sistemas que utilicen
+# cualquiera de estos vocabularios biomédicos de referencia.
+
+crono_o:codifica rdf:type owl:ObjectProperty ;
+    rdfs:label "codifica"@es ;
+    rdfs:seeAlso biolink:has_gene_product ;
+    rdfs:seeAlso ro:0002205 .
+
+crono_o:localizadoEn rdf:type owl:ObjectProperty ;
+    rdfs:label "localizado en"@es ;
+    rdfs:seeAlso biolink:located_in ;
+    rdfs:seeAlso ro:0001025 .
+
+crono_o:interactuaCon rdf:type owl:ObjectProperty ;
+    rdfs:label "interactúa con"@es ;
+    rdfs:seeAlso biolink:interacts_with ;
+    rdfs:seeAlso ro:0002434 .
+
+crono_o:regulaPositivamente rdf:type owl:ObjectProperty ;
+    rdfs:label "regula positivamente"@es ;
+    rdfs:seeAlso biolink:positively_regulates ;
+    rdfs:seeAlso ro:0002213 .
+
+crono_o:regulaNegativamente rdf:type owl:ObjectProperty ;
+    rdfs:label "regula negativamente"@es ;
+    rdfs:seeAlso biolink:negatively_regulates ;
+    rdfs:seeAlso ro:0002212 .
+
+crono_o:causaTrastorno rdf:type owl:ObjectProperty ;
+    rdfs:label "causa trastorno"@es ;
+    rdfs:seeAlso biolink:causes ;
+    rdfs:seeAlso ro:0003303 .
+
+crono_o:tieneFenotipo rdf:type owl:ObjectProperty ;
+    rdfs:label "tiene fenotipo"@es ;
+    rdfs:seeAlso biolink:has_phenotype ;
+    rdfs:seeAlso ro:0002200 .
+
+crono_o:tratadoCon rdf:type owl:ObjectProperty ;
+    rdfs:label "tratado con"@es ;
+    rdfs:seeAlso biolink:treated_by ;
+    rdfs:seeAlso ro:0002302 .
+
+crono_o:participaEn rdf:type owl:ObjectProperty ;
+    rdfs:label "participa en"@es ;
+    rdfs:seeAlso biolink:participates_in ;
+    rdfs:seeAlso ro:0002331 .
+
+crono_o:afectaGen rdf:type owl:ObjectProperty ;
+    rdfs:label "afecta al gen"@es ;
+    rdfs:seeAlso biolink:affects .
+
+crono_o:tienePatronHerencia rdf:type owl:ObjectProperty ;
+    rdfs:label "tiene patrón de herencia"@es ;
+    rdfs:seeAlso biolink:has_mode_of_inheritance .
+
+crono_o:tipoMutacion rdf:type owl:ObjectProperty ;
+    rdfs:label "tipo de mutación"@es ;
+    rdfs:comment "Relaciona una variante con su clasificación según Sequence Ontology (missense, frameshift, etc.)."@es .
+
+crono_o:tienePatogenicidad rdf:type owl:DatatypeProperty ;
+    rdfs:label "tiene patogenicidad"@es ;
+    rdfs:comment "Clasificación de patogenicidad según ACMG: Patogénica, Probablemente patogénica, VUS, Probablemente benigna, Benigna."@es ;
+    rdfs:range xsd:string .
+
+
+# =============================================================================
+# SECCIÓN 2: PROCESOS BIOLÓGICOS (Gene Ontology)
+# =============================================================================
+
+crono:Proceso_RitmoCircadiano rdf:type biolink:BiologicalProcess ;
+    rdfs:label "Ritmo circadiano"@es ;
+    rdfs:comment "Proceso biológico endógeno con período de ~24 horas."@es ;
+    rdfs:seeAlso go:0007623 .
+
+crono:Proceso_RegulacionRitmo rdf:type biolink:BiologicalProcess ;
+    rdfs:label "Regulación del ritmo circadiano"@es ;
+    rdfs:comment "Proceso que modula el ritmo circadiano."@es ;
+    rdfs:seeAlso go:0042752 .
+
+crono:Proceso_FosforilacionProteina rdf:type biolink:BiologicalProcess ;
+    rdfs:label "Fosforilación de proteínas"@es ;
+    rdfs:seeAlso go:0006468 .
+
+
+# =============================================================================
+# SECCIÓN 3: PATRONES DE HERENCIA (GENO)
+# =============================================================================
+
+crono:Herencia_AutosomicaDominante rdf:type owl:Class ;
+    rdfs:label "Herencia autosómica dominante"@es ;
+    rdfs:comment "Patrón de herencia donde una sola copia del alelo mutante es suficiente para causar el fenotipo."@es ;
+    rdfs:seeAlso geno:0000147 .
+
+
+# =============================================================================
+# SECCIÓN 4: TIPOS DE MUTACIONES (SEQUENCE ONTOLOGY)
+# =============================================================================
+
+# Nota: Los tipos de mutaciones se definen como owl:Class porque representan
+# CATEGORÍAS abstractas que clasifican las variantes. Las instancias concretas
+# de variantes (Sección 10) usan biolink:SequenceVariant y se relacionan con
+# estas categorías mediante la propiedad crono_o:tipoMutacion. Este patrón
+# separa correctamente la ontología (categorías) de los datos (instancias).
+
+crono:TipoMutacion_Missense rdf:type owl:Class ;
+    rdfs:label "Variante missense"@es ;
+    rdfs:comment "Variante que causa sustitución de aminoácido."@es ;
+    rdfs:seeAlso so:0001583 .
+
+crono:TipoMutacion_SpliceDonor rdf:type owl:Class ;
+    rdfs:label "Variante de sitio donador de splicing"@es ;
+    rdfs:comment "Variante que altera el sitio donador de splicing."@es ;
+    rdfs:seeAlso so:0001575 .
+
+crono:TipoMutacion_VNTR rdf:type owl:Class ;
+    rdfs:label "Repetición en tándem de número variable"@es ;
+    rdfs:comment "Polimorfismo de longitud variable por repeticiones."@es ;
+    rdfs:seeAlso so:0000643 .
+
+crono:TipoMutacion_Sinonima rdf:type owl:Class ;
+    rdfs:label "Variante sinónima"@es ;
+    rdfs:comment "Variante que no cambia el aminoácido codificado."@es ;
+    rdfs:seeAlso so:0001819 .
+
+crono:TipoMutacion_Frameshift rdf:type owl:Class ;
+    rdfs:label "Variante frameshift"@es ;
+    rdfs:comment "Variante que altera el marco de lectura."@es ;
+    rdfs:seeAlso so:0001589 .
+
+crono:TipoMutacion_Nonsense rdf:type owl:Class ;
+    rdfs:label "Variante nonsense"@es ;
+    rdfs:comment "Variante que introduce un codón de parada prematuro."@es ;
+    rdfs:seeAlso so:0001587 .
+
+
+# =============================================================================
+# SECCIÓN 5: CROMOSOMAS
+# =============================================================================
+
+crono:Cromosoma_1 rdf:type biolink:NucleicAcidEntity ;
+    rdfs:label "Cromosoma 1"@es ;
+    rdfs:comment "Cromosoma humano 1 (GRCh38)."@es ;
+    rdfs:seeAlso refseq:NC_000001 .
+
+crono:Cromosoma_2 rdf:type biolink:NucleicAcidEntity ;
+    rdfs:label "Cromosoma 2"@es ;
+    rdfs:comment "Cromosoma humano 2 (GRCh38)."@es ;
+    rdfs:seeAlso refseq:NC_000002 .
+
+crono:Cromosoma_4 rdf:type biolink:NucleicAcidEntity ;
+    rdfs:label "Cromosoma 4"@es ;
+    rdfs:comment "Cromosoma humano 4 (GRCh38)."@es ;
+    rdfs:seeAlso refseq:NC_000004 .
+
+crono:Cromosoma_11 rdf:type biolink:NucleicAcidEntity ;
+    rdfs:label "Cromosoma 11"@es ;
+    rdfs:comment "Cromosoma humano 11 (GRCh38)."@es ;
+    rdfs:seeAlso refseq:NC_000011 .
+
+crono:Cromosoma_12 rdf:type biolink:NucleicAcidEntity ;
+    rdfs:label "Cromosoma 12"@es ;
+    rdfs:comment "Cromosoma humano 12 (GRCh38)."@es ;
+    rdfs:seeAlso refseq:NC_000012 .
+
+crono:Cromosoma_17 rdf:type biolink:NucleicAcidEntity ;
+    rdfs:label "Cromosoma 17"@es ;
+    rdfs:comment "Cromosoma humano 17 (GRCh38)."@es ;
+    rdfs:seeAlso refseq:NC_000017 .
+
+crono:Cromosoma_22 rdf:type biolink:NucleicAcidEntity ;
+    rdfs:label "Cromosoma 22"@es ;
+    rdfs:comment "Cromosoma humano 22 (GRCh38)."@es ;
+    rdfs:seeAlso refseq:NC_000022 .
+
+
+# =============================================================================
+# SECCIÓN 6: FENOTIPOS CLÍNICOS (HPO)
+# =============================================================================
+
+crono:Fenotipo_SomnolenciaTemprana rdf:type biolink:PhenotypicFeature ;
+    rdfs:label "Inicio de sueño temprano"@es ;
+    rdfs:comment "Inicio del sueño en horas tempranas (18-21h). Característica de ASPD."@es ;
+    rdfs:seeAlso hp:0031873 .
+
+crono:Fenotipo_DespertarTemprano rdf:type biolink:PhenotypicFeature ;
+    rdfs:label "Despertar temprano"@es ;
+    rdfs:comment "Despertar antes de lo deseado y no poder volver a dormir."@es ;
+    rdfs:seeAlso hp:0031356 .
+
+crono:Fenotipo_DificultadConciliar rdf:type biolink:PhenotypicFeature ;
+    rdfs:label "Dificultad para conciliar el sueño"@es ;
+    rdfs:comment "Incapacidad para dormirse a hora convencional."@es ;
+    rdfs:seeAlso hp:0031354 .
+
+crono:Fenotipo_DespertarTardio rdf:type biolink:PhenotypicFeature ;
+    rdfs:label "Despertar tardío"@es ;
+    rdfs:comment "Despertar natural en mediodía o tarde."@es ;
+    rdfs:seeAlso hp:0025298 .
+
+crono:Fenotipo_PatronSuenoAlterado rdf:type biolink:PhenotypicFeature ;
+    rdfs:label "Patrón de sueño alterado"@es ;
+    rdfs:comment "Desincronización del ciclo sueño-vigilia."@es ;
+    rdfs:seeAlso hp:0006979 .
+
+crono:Fenotipo_SuenoFragmentado rdf:type biolink:PhenotypicFeature ;
+    rdfs:label "Sueño fragmentado"@es ;
+    rdfs:comment "Múltiples episodios breves de sueño sin consolidación."@es ;
+    rdfs:seeAlso hp:0025199 .
+
+crono:Fenotipo_DesincronizacionCircadiana rdf:type biolink:PhenotypicFeature ;
+    rdfs:label "Desincronización circadiana"@es ;
+    rdfs:comment "Ritmo circadiano no alineado con ciclo de 24h."@es ;
+    rdfs:seeAlso hp:0025365 .
+
+crono:Fenotipo_DificultadMantener rdf:type biolink:PhenotypicFeature ;
+    rdfs:label "Dificultad mantener sueño"@es ;
+    rdfs:comment "Despertares frecuentes nocturnos."@es ;
+    rdfs:seeAlso hp:0031355 .
+
+crono:Fenotipo_CalidadPobreSueno rdf:type biolink:PhenotypicFeature ;
+    rdfs:label "Calidad pobre del sueño"@es ;
+    rdfs:comment "Sueño no reparador."@es ;
+    rdfs:seeAlso hp:4000064 .
+
+crono:Fenotipo_SomnolenciaDiurna rdf:type biolink:PhenotypicFeature ;
+    rdfs:label "Somnolencia diurna excesiva"@es ;
+    rdfs:comment "Excesiva propensión al sueño diurno."@es ;
+    rdfs:seeAlso hp:0001262 .
+
+
+# =============================================================================
+# SECCIÓN 7: TRATAMIENTOS FARMACOLÓGICOS
+# =============================================================================
+
+crono:Farmaco_Melatonina rdf:type biolink:Drug ;
+    rdfs:label "Melatonina"@es ;
+    rdfs:comment "Hormona endógena para sincronización circadiana. Agonista MT1/MT2. Administración: por la noche en DSPD e insomnio; por la mañana en ASPD."@es ;
+    rdfs:seeAlso drugbank:DB01065 .
+
+crono:Farmaco_Ramelteon rdf:type biolink:Drug ;
+    rdfs:label "Ramelteon"@es ;
+    rdfs:comment "Agonista selectivo de receptores de melatonina."@es ;
+    rdfs:seeAlso drugbank:DB00980 .
+
+crono:Farmaco_Tasimelteon rdf:type biolink:Drug ;
+    rdfs:label "Tasimelteon"@es ;
+    rdfs:comment "Agonista dual MT1/MT2, aprobado para Non-24."@es ;
+    rdfs:seeAlso drugbank:DB09071 .
+
+
+# =============================================================================
+# SECCIÓN 8: TRASTORNOS DEL RITMO CIRCADIANO DEL SUEÑO (CRSDs)
+# =============================================================================
+
+# 1. Advanced Sleep Phase Disorder (ASPD) 
+crono:Trastorno_ASPD rdf:type biolink:Disease ;
+    rdfs:label "Trastorno de Fase de Sueño Adelantada"@es ;
+    rdfs:comment "CRSD caracterizado por somnolencia temprana (18-21h) y despertar temprano (2-5h)."@es ;
+    rdfs:seeAlso mondo:0024378 ;
+    crono_o:tieneFenotipo crono:Fenotipo_DesincronizacionCircadiana ;
+    crono_o:tieneFenotipo crono:Fenotipo_SomnolenciaTemprana ;
+    crono_o:tieneFenotipo crono:Fenotipo_DespertarTemprano ;
+    crono_o:tratadoCon crono:Farmaco_Melatonina .
+
+# 2. Delayed Sleep Phase Disorder (DSPD)
+crono:Trastorno_DSPD rdf:type biolink:Disease ;
+    rdfs:label "Trastorno de Fase de Sueño Retrasada"@es ;
+    rdfs:comment "CRSD caracterizado por incapacidad para dormirse antes de 2-4 AM y despertar tardío."@es ;
+    rdfs:seeAlso mondo:0024377 ;
+    crono_o:tieneFenotipo crono:Fenotipo_DesincronizacionCircadiana ;
+    crono_o:tieneFenotipo crono:Fenotipo_DificultadConciliar ;
+    crono_o:tieneFenotipo crono:Fenotipo_DespertarTardio ;
+    crono_o:tratadoCon crono:Farmaco_Melatonina ;
+    crono_o:tratadoCon crono:Farmaco_Ramelteon .
+
+# 3. Irregular Sleep-Wake Rhythm Disorder
+crono:Trastorno_IrregularSleepWake rdf:type biolink:Disease ;
+    rdfs:label "Trastorno de Ritmo Sueño-Vigilia Irregular"@es ;
+    rdfs:comment "CRSD caracterizado por múltiples episodios de sueño fragmentado distribuidos en 24h sin patrón claro."@es ;
+    rdfs:seeAlso mondo:0024379 ;
+    crono_o:tieneFenotipo crono:Fenotipo_DesincronizacionCircadiana ;
+    crono_o:tieneFenotipo crono:Fenotipo_PatronSuenoAlterado ;
+    crono_o:tieneFenotipo crono:Fenotipo_DificultadConciliar ;
+    crono_o:tieneFenotipo crono:Fenotipo_DificultadMantener ;
+    crono_o:tieneFenotipo crono:Fenotipo_SuenoFragmentado ;
+    crono_o:tieneFenotipo crono:Fenotipo_DespertarTemprano ;
+    crono_o:tieneFenotipo crono:Fenotipo_CalidadPobreSueno ;
+    crono_o:tieneFenotipo crono:Fenotipo_SomnolenciaDiurna ;
+    crono_o:tratadoCon crono:Farmaco_Melatonina .
+
+# 4. Non-24-Hour Sleep-Wake Disorder
+crono:Trastorno_Non24 rdf:type biolink:Disease ;
+    rdfs:label "Trastorno de Sueño-Vigilia No-24 Horas"@es ;
+    rdfs:comment "CRSD caracterizado por ritmo circadiano >24h, común en personas totalmente ciegas."@es ;
+    rdfs:seeAlso mondo:0019137 ;
+    crono_o:tieneFenotipo crono:Fenotipo_DesincronizacionCircadiana ;
+    crono_o:tieneFenotipo crono:Fenotipo_PatronSuenoAlterado ;
+    crono_o:tieneFenotipo crono:Fenotipo_DificultadConciliar ;
+    crono_o:tieneFenotipo crono:Fenotipo_DificultadMantener ;
+    crono_o:tieneFenotipo crono:Fenotipo_SuenoFragmentado ;
+    crono_o:tieneFenotipo crono:Fenotipo_DespertarTardio ;
+    crono_o:tieneFenotipo crono:Fenotipo_CalidadPobreSueno ;
+    crono_o:tieneFenotipo crono:Fenotipo_SomnolenciaDiurna ;
+    crono_o:tratadoCon crono:Farmaco_Tasimelteon .
+
+# 5. Insomnio Crónico
+crono:Trastorno_Insomnio rdf:type biolink:Disease ;
+    rdfs:label "Insomnio Crónico"@es ;
+    rdfs:comment "Dificultad crónica para iniciar o mantener el sueño, con duración ≥3 meses."@es ;
+    rdfs:seeAlso mondo:0013600 ;
+    crono_o:tieneFenotipo crono:Fenotipo_PatronSuenoAlterado ;
+    crono_o:tieneFenotipo crono:Fenotipo_DificultadConciliar ;
+    crono_o:tieneFenotipo crono:Fenotipo_DificultadMantener ;
+    crono_o:tieneFenotipo crono:Fenotipo_SuenoFragmentado ;
+    crono_o:tieneFenotipo crono:Fenotipo_DespertarTemprano ;
+    crono_o:tieneFenotipo crono:Fenotipo_CalidadPobreSueno ;
+    crono_o:tieneFenotipo crono:Fenotipo_SomnolenciaDiurna ;
+    crono_o:tratadoCon crono:Farmaco_Melatonina ;
+    crono_o:tratadoCon crono:Farmaco_Ramelteon .
+
+
+# =============================================================================
+# SECCIÓN 9: GENES DEL RELOJ CIRCADIANO
+# =============================================================================
+
+# Gen CLOCK
+crono:Gen_CLOCK rdf:type biolink:Gene ;
+    rdfs:label "CLOCK"@es ;
+    rdfs:comment "Circadian Locomotor Output Cycles Kaput. Regulador transcripcional maestro del ritmo circadiano."@es ;
+    rdfs:seeAlso ncbi_gene:9575 ;
+    crono_o:codifica crono:Proteina_CLOCK ;
+    crono_o:localizadoEn crono:Cromosoma_4 .
+
+# Gen BMAL1
+crono:Gen_BMAL1 rdf:type biolink:Gene ;
+    rdfs:label "BMAL1"@es ;
+    rdfs:comment "Brain and Muscle ARNT-Like 1. Factor de transcripción heterodímero obligado con CLOCK."@es ;
+    rdfs:seeAlso ncbi_gene:406 ;
+    crono_o:codifica crono:Proteina_BMAL1 ;
+    crono_o:localizadoEn crono:Cromosoma_11 .
+
+# Gen NPAS2
+crono:Gen_NPAS2 rdf:type biolink:Gene ;
+    rdfs:label "NPAS2"@es ;
+    rdfs:comment "Neuronal PAS Domain Protein 2. Paralógo funcional de CLOCK en cerebro anterior."@es ;
+    rdfs:seeAlso ncbi_gene:4862 ;
+    crono_o:codifica crono:Proteina_NPAS2 ;
+    crono_o:localizadoEn crono:Cromosoma_2 .
+
+# Gen PER1
+crono:Gen_PER1 rdf:type biolink:Gene ;
+    rdfs:label "PER1"@es ;
+    rdfs:comment "Period Circadian Regulator 1. Represor transcripcional negativo."@es ;
+    rdfs:seeAlso ncbi_gene:5187 ;
+    crono_o:codifica crono:Proteina_PER1 ;
+    crono_o:localizadoEn crono:Cromosoma_17 .
+
+# Gen PER2
+crono:Gen_PER2 rdf:type biolink:Gene ;
+    rdfs:label "PER2"@es ;
+    rdfs:comment "Period Circadian Regulator 2. Mutaciones causan FASPS."@es ;
+    rdfs:seeAlso ncbi_gene:8864 ;
+    crono_o:codifica crono:Proteina_PER2 ;
+    crono_o:localizadoEn crono:Cromosoma_2 .
+
+# Gen PER3
+crono:Gen_PER3 rdf:type biolink:Gene ;
+    rdfs:label "PER3"@es ;
+    rdfs:comment "Period Circadian Regulator 3. Modulador de cronotipo."@es ;
+    rdfs:seeAlso ncbi_gene:8863 ;
+    crono_o:codifica crono:Proteina_PER3 ;
+    crono_o:localizadoEn crono:Cromosoma_1 .
+
+# Gen CRY1
+crono:Gen_CRY1 rdf:type biolink:Gene ;
+    rdfs:label "CRY1"@es ;
+    rdfs:comment "Cryptochrome Circadian Regulator 1. Represor de CLOCK-BMAL1."@es ;
+    rdfs:seeAlso ncbi_gene:1407 ;
+    crono_o:codifica crono:Proteina_CRY1 ;
+    crono_o:localizadoEn crono:Cromosoma_12 .
+
+# Gen CRY2
+crono:Gen_CRY2 rdf:type biolink:Gene ;
+    rdfs:label "CRY2"@es ;
+    rdfs:comment "Cryptochrome Circadian Regulator 2. Componente del loop negativo."@es ;
+    rdfs:seeAlso ncbi_gene:1408 ;
+    crono_o:codifica crono:Proteina_CRY2 ;
+    crono_o:localizadoEn crono:Cromosoma_11 .
+
+# Gen NR1D1
+crono:Gen_NR1D1 rdf:type biolink:Gene ;
+    rdfs:label "NR1D1"@es ;
+    rdfs:comment "Nuclear Receptor Subfamily 1 Group D Member 1. Represor de BMAL1."@es ;
+    rdfs:seeAlso ncbi_gene:9572 ;
+    crono_o:codifica crono:Proteina_NR1D1 ;
+    crono_o:localizadoEn crono:Cromosoma_17 .
+
+# Gen CSNK1D
+crono:Gen_CSNK1D rdf:type biolink:Gene ;
+    rdfs:label "CSNK1D"@es ;
+    rdfs:comment "Casein Kinase 1 Delta. Fosforila PER regulando su estabilidad."@es ;
+    rdfs:seeAlso ncbi_gene:1453 ;
+    crono_o:codifica crono:Proteina_CSNK1D ;
+    crono_o:localizadoEn crono:Cromosoma_17 .
+
+# Gen CSNK1E
+crono:Gen_CSNK1E rdf:type biolink:Gene ;
+    rdfs:label "CSNK1E"@es ;
+    rdfs:comment "Casein Kinase 1 Epsilon. Fosforila PER controlando translocación nuclear."@es ;
+    rdfs:seeAlso ncbi_gene:1454 ;
+    crono_o:codifica crono:Proteina_CSNK1E ;
+    crono_o:localizadoEn crono:Cromosoma_22 .
+
+
+# =============================================================================
+# SECCIÓN 10: PROTEÍNAS
+# =============================================================================
+
+crono:Proteina_CLOCK rdf:type biolink:Protein ;
+    rdfs:label "Proteína CLOCK"@es ;
+    rdfs:comment "Factor de transcripción con actividad histona acetiltransferasa. Forma heterodímero con BMAL1 (confirmado experimentalmente: cristalografía, co-IP)."@es ;
+    rdfs:seeAlso uniprot:O15516 ;
+    crono_o:participaEn crono:Proceso_RitmoCircadiano ;
+    crono_o:interactuaCon crono:Proteina_BMAL1 .
+
+crono:Proteina_BMAL1 rdf:type biolink:Protein ;
+    rdfs:label "Proteína BMAL1"@es ;
+    rdfs:comment "Factor de transcripción con dominios bHLH (basic Helix-Loop-Helix) para unión al ADN y PAS (PER-ARNT-SIM) para dimerización proteica. Forma heterodímeros con CLOCK y NPAS2 (confirmados experimentalmente)."@es ;
+    rdfs:seeAlso uniprot:O00327 ;
+    crono_o:participaEn crono:Proceso_RitmoCircadiano ;
+    crono_o:interactuaCon crono:Proteina_CLOCK ;
+    crono_o:interactuaCon crono:Proteina_NPAS2 .
+
+crono:Proteina_NPAS2 rdf:type biolink:Protein ;
+    rdfs:label "Proteína NPAS2"@es ;
+    rdfs:comment "Paralógo funcional de CLOCK, expresado en cerebro anterior. Actúa como pareja transcripcional de BMAL1 (confirmado experimentalmente)."@es ;
+    rdfs:seeAlso uniprot:Q99743 ;
+    crono_o:participaEn crono:Proceso_RitmoCircadiano ;
+    crono_o:interactuaCon crono:Proteina_BMAL1 .
+
+crono:Proteina_PER1 rdf:type biolink:Protein ;
+    rdfs:label "Proteína PER1"@es ;
+    rdfs:comment "Represor transcripcional del loop negativo. Forma complejos multiproteicos PER-CRY en citoplasma (evidencia bioquímica general; pares específicos no determinados experimentalmente). Es fosforilada por CK1δ/ε."@es ;
+    rdfs:seeAlso uniprot:O15534 ;
+    crono_o:participaEn crono:Proceso_RitmoCircadiano ;
+    crono_o:interactuaCon crono:Proteina_CRY1 ;
+    crono_o:interactuaCon crono:Proteina_CRY2 ;
+    crono_o:interactuaCon crono:Proteina_CSNK1D ;
+    crono_o:interactuaCon crono:Proteina_CSNK1E .
+
+crono:Proteina_PER2 rdf:type biolink:Protein ;
+    rdfs:label "Proteína PER2"@es ;
+    rdfs:comment "Represor transcripcional crítico, sustrato de CK1. Forma complejos multiproteicos PER-CRY en citoplasma (evidencia bioquímica general; pares específicos no determinados experimentalmente). La fosforilación por CK1δ/ε marca para ubiquitinación."@es ;
+    rdfs:seeAlso uniprot:O15055 ;
+    crono_o:participaEn crono:Proceso_RitmoCircadiano ;
+    crono_o:interactuaCon crono:Proteina_CRY1 ;
+    crono_o:interactuaCon crono:Proteina_CRY2 ;
+    crono_o:interactuaCon crono:Proteina_CSNK1D ;
+    crono_o:interactuaCon crono:Proteina_CSNK1E .
+
+crono:Proteina_PER3 rdf:type biolink:Protein ;
+    rdfs:label "Proteína PER3"@es ;
+    rdfs:comment "Modulador de amplitud circadiana. Forma complejos multiproteicos PER-CRY en citoplasma (evidencia bioquímica general; pares específicos no determinados experimentalmente). Es fosforilada por CK1δ."@es ;
+    rdfs:seeAlso uniprot:P56645 ;
+    crono_o:participaEn crono:Proceso_RitmoCircadiano ;
+    crono_o:interactuaCon crono:Proteina_CRY1 ;
+    crono_o:interactuaCon crono:Proteina_CRY2 ;
+    crono_o:interactuaCon crono:Proteina_CSNK1D .
+
+crono:Proteina_CRY1 rdf:type biolink:Protein ;
+    rdfs:label "Proteína CRY1"@es ;
+    rdfs:comment "Criptocromo fotorreceptor circadiano. Forma complejos multiproteicos PER-CRY que reprimen CLOCK:BMAL1 (evidencia bioquímica general; pares específicos no determinados experimentalmente). Los parálogos CRY1 y CRY2 tienen roles no redundantes."@es ;
+    rdfs:seeAlso uniprot:Q16526 ;
+    crono_o:participaEn crono:Proceso_RitmoCircadiano ;
+    crono_o:interactuaCon crono:Proteina_PER1 ;
+    crono_o:interactuaCon crono:Proteina_PER2 ;
+    crono_o:interactuaCon crono:Proteina_PER3 ;
+    crono_o:interactuaCon crono:Proteina_CRY2 .
+
+crono:Proteina_CRY2 rdf:type biolink:Protein ;
+    rdfs:label "Proteína CRY2"@es ;
+    rdfs:comment "Criptocromo represor de CLOCK-BMAL1. Forma complejos multiproteicos PER-CRY (evidencia bioquímica general; pares específicos no determinados experimentalmente). Los parálogos CRY1 y CRY2 tienen roles no redundantes."@es ;
+    rdfs:seeAlso uniprot:Q49AN0 ;
+    crono_o:participaEn crono:Proceso_RitmoCircadiano ;
+    crono_o:interactuaCon crono:Proteina_PER1 ;
+    crono_o:interactuaCon crono:Proteina_PER2 ;
+    crono_o:interactuaCon crono:Proteina_PER3 ;
+    crono_o:interactuaCon crono:Proteina_CRY1 .
+
+crono:Proteina_NR1D1 rdf:type biolink:Protein ;
+    rdfs:label "Proteína REV-ERBα"@es ;
+    rdfs:comment "Receptor nuclear represor de BMAL1."@es ;
+    rdfs:seeAlso uniprot:P20393 ;
+    crono_o:participaEn crono:Proceso_RegulacionRitmo .
+
+crono:Proteina_CSNK1D rdf:type biolink:Protein ;
+    rdfs:label "Caseína quinasa I delta"@es ;
+    rdfs:comment "Quinasa que fosforila PER. La fosforilación marca las proteínas PER para ubiquitinación y degradación (relación enzima-sustrato confirmada)."@es ;
+    rdfs:seeAlso uniprot:P48730 ;
+    crono_o:participaEn crono:Proceso_FosforilacionProteina ;
+    crono_o:interactuaCon crono:Proteina_PER2 ;
+    crono_o:interactuaCon crono:Proteina_PER1 ;
+    crono_o:interactuaCon crono:Proteina_PER3 .
+
+crono:Proteina_CSNK1E rdf:type biolink:Protein ;
+    rdfs:label "Caseína quinasa I epsilon"@es ;
+    rdfs:comment "Quinasa que regula estabilidad de PER. La fosforilación marca las proteínas PER para ubiquitinación y degradación (relación enzima-sustrato confirmada)."@es ;
+    rdfs:seeAlso uniprot:P49674 ;
+    crono_o:participaEn crono:Proceso_FosforilacionProteina ;
+    crono_o:interactuaCon crono:Proteina_PER2 ;
+    crono_o:interactuaCon crono:Proteina_PER1 .
+
+
+# =============================================================================
+# SECCIÓN 11: VARIANTES GENÉTICAS
+# =============================================================================
+
+# Variante PER2 p.Ser662Gly - causa ASPD
+crono:Variante_PER2_Ser662Gly rdf:type biolink:SequenceVariant ;
+    rdfs:label "PER2 p.Ser662Gly"@es ;
+    rdfs:comment "Mutación missense en PER2 que causa ASPD. Altera fosforilación por CK1ε."@es ;
+    rdfs:seeAlso clinvar:6345 ;
+    crono_o:tipoMutacion crono:TipoMutacion_Missense ;
+    crono_o:afectaGen crono:Gen_PER2 ;
+    crono_o:causaTrastorno crono:Trastorno_ASPD ;
+    crono_o:tienePatogenicidad "Patogénica"^^xsd:string ;
+    crono_o:tienePatronHerencia crono:Herencia_AutosomicaDominante .
+
+# Variante CRY1 c.1657+3A>C - causa DSPD
+crono:Variante_CRY1_Splicing rdf:type biolink:SequenceVariant ;
+    rdfs:label "CRY1 c.1657+3A>C"@es ;
+    rdfs:comment "Variante de splicing que causa DSPD. Elongación de proteína CRY1."@es ;
+    rdfs:seeAlso clinvar:427574 ;
+    crono_o:tipoMutacion crono:TipoMutacion_SpliceDonor ;
+    crono_o:afectaGen crono:Gen_CRY1 ;
+    crono_o:causaTrastorno crono:Trastorno_DSPD ;
+    crono_o:tienePatogenicidad "Factor de riesgo"^^xsd:string ;
+    crono_o:tienePatronHerencia crono:Herencia_AutosomicaDominante .
+
+# Variante CSNK1D p.Thr44Ala - causa ASPD
+crono:Variante_CSNK1D_Thr44Ala rdf:type biolink:SequenceVariant ;
+    rdfs:label "CSNK1D p.Thr44Ala"@es ;
+    rdfs:comment "Mutación missense que causa ASPD. Reduce actividad quinasa."@es ;
+    rdfs:seeAlso clinvar:8741 ;
+    crono_o:tipoMutacion crono:TipoMutacion_Missense ;
+    crono_o:afectaGen crono:Gen_CSNK1D ;
+    crono_o:causaTrastorno crono:Trastorno_ASPD ;
+    crono_o:tienePatogenicidad "Patogénica"^^xsd:string ;
+    crono_o:tienePatronHerencia crono:Herencia_AutosomicaDominante .
+
+# Variante PER3 VNTR 4-repeat - contribuye a DSPD
+crono:Variante_PER3_VNTR_4rep rdf:type biolink:SequenceVariant ;
+    rdfs:label "PER3 VNTR 4-repeat"@es ;
+    rdfs:comment "Polimorfismo VNTR asociado con cronotipo vespertino."@es ;
+    crono_o:tipoMutacion crono:TipoMutacion_VNTR ;
+    crono_o:afectaGen crono:Gen_PER3 ;
+    crono_o:causaTrastorno crono:Trastorno_DSPD .
+
+# Variante CLOCK 3111T>C
+crono:Variante_CLOCK_3111C rdf:type biolink:SequenceVariant ;
+    rdfs:label "CLOCK 3111T>C"@es ;
+    rdfs:comment "Polimorfismo sinónimo asociado con cronotipo."@es ;
+    rdfs:seeAlso dbsnp:rs1801260 ;
+    crono_o:tipoMutacion crono:TipoMutacion_Sinonima ;
+    crono_o:afectaGen crono:Gen_CLOCK .
+
+
+# =============================================================================
+# SECCIÓN 12: REGULACIÓN TRANSCRIPCIONAL-TRADUCCIONAL (LOOP CIRCADIANO)
+# =============================================================================
+# Esta sección consolida TODAS las regulaciones del reloj
+# circadiano, separadas de las definiciones de proteínas para mayor claridad.
+
+# -------------------------
+# Loop positivo: CLOCK y BMAL1 activan transcripción de genes del loop negativo
+# -------------------------
+crono:Proteina_CLOCK crono_o:regulaPositivamente crono:Gen_PER1 .
+crono:Proteina_CLOCK crono_o:regulaPositivamente crono:Gen_PER2 .
+crono:Proteina_CLOCK crono_o:regulaPositivamente crono:Gen_PER3 .
+crono:Proteina_CLOCK crono_o:regulaPositivamente crono:Gen_CRY1 .
+crono:Proteina_CLOCK crono_o:regulaPositivamente crono:Gen_CRY2 .
+crono:Proteina_CLOCK crono_o:regulaPositivamente crono:Gen_NR1D1 .
+
+crono:Proteina_BMAL1 crono_o:regulaPositivamente crono:Gen_PER1 .
+crono:Proteina_BMAL1 crono_o:regulaPositivamente crono:Gen_PER2 .
+crono:Proteina_BMAL1 crono_o:regulaPositivamente crono:Gen_PER3 .
+crono:Proteina_BMAL1 crono_o:regulaPositivamente crono:Gen_CRY1 .
+crono:Proteina_BMAL1 crono_o:regulaPositivamente crono:Gen_CRY2 .
+crono:Proteina_BMAL1 crono_o:regulaPositivamente crono:Gen_NR1D1 .
+
+# -------------------------
+# Loop positivo alternativo: NPAS2 (parálógo de CLOCK) activa genes del loop negativo
+# -------------------------
+crono:Proteina_NPAS2 crono_o:regulaPositivamente crono:Gen_PER1 .
+crono:Proteina_NPAS2 crono_o:regulaPositivamente crono:Gen_PER2 .
+crono:Proteina_NPAS2 crono_o:regulaPositivamente crono:Gen_CRY1 .
+
+# -------------------------
+# Loop negativo: PER1, PER2, CRY1 y CRY2 reprimen CLOCK y BMAL1
+# -------------------------
+crono:Proteina_PER1 crono_o:regulaNegativamente crono:Proteina_CLOCK .
+crono:Proteina_PER1 crono_o:regulaNegativamente crono:Proteina_BMAL1 .
+
+crono:Proteina_PER2 crono_o:regulaNegativamente crono:Proteina_CLOCK .
+crono:Proteina_PER2 crono_o:regulaNegativamente crono:Proteina_BMAL1 .
+
+crono:Proteina_CRY1 crono_o:regulaNegativamente crono:Proteina_CLOCK .
+crono:Proteina_CRY1 crono_o:regulaNegativamente crono:Proteina_BMAL1 .
+
+crono:Proteina_CRY2 crono_o:regulaNegativamente crono:Proteina_CLOCK .
+crono:Proteina_CRY2 crono_o:regulaNegativamente crono:Proteina_BMAL1 .
+
+# -------------------------
+# Loop estabilizador: NR1D1 (REV-ERBα) reprime BMAL1
+# -------------------------
+crono:Proteina_NR1D1 crono_o:regulaNegativamente crono:Gen_BMAL1 .
+
