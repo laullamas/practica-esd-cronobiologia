@@ -10,8 +10,8 @@ Grafo de conocimiento RDF sobre el papel de los genes del reloj circadiano human
 
 ## Contenido del repositorio
 
-- **grafo_rdf**: Grafo RDF principal en formato Turtle 
-- **consultas_sparql**: Consultas SPARQL para análisis del grafo 
+- **grafo_rdf**: Grafo RDF principal en formato Turtle y RDF/XML
+- **consultas_sparql**: Archivo rmd y httml
 - **documentación**: Capturas de pantalla del despliegue en Blazegraph, resultado de validación W3C...
 - **informe**
 
