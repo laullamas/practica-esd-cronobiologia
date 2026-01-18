@@ -15,6 +15,8 @@ Grafo de conocimiento RDF sobre el papel de los genes del reloj circadiano human
 - **evidencias**: Capturas de pantalla del despliegue en Blazegraph, resultado de validación W3C...
 - **informe**
 
+Esta documentación se encuentra también en el servidor docente del máster dayhoff.inf.um.es, en la ruta "explotacion_semantica_datos/entrega_esd".
+
 ## Licencia
 
 MIT License
